@@ -1,0 +1,28 @@
+name: Java CI/CD Pipeline
+
+# TETİKLEYİCİ: Bu pipeline ne zaman çalışsın?
+# Cevap: 'main' dalına her 'push' yapıldığında.
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  # GÖREV 1: Derleme ve Test (Build)
+  build:
+    runs-on: ubuntu-latest # GitHub'ın sağladığı sanal bir Ubuntu makinesinde çalış.
+
+    steps:
+    # 1. Kodları Çek: GitHub deposundaki kodları bu sanal makineye indir.
+    - name: Kodları Cek (Checkout)
+      uses: actions/checkout@v3
+
+    # 2. Java Kur: Sanal makineye Java 17 kur (Amazon Corretto).
+    - name: JDK 17 Kur
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'corretto'
+
+    # 3. Derle ve Test Et: Bizim yerimize 'mvnw' komutunu çalıştır.
+    - name: Maven ile Derle
+      run: ./mvnw clean package
