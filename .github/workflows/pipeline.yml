@@ -1,28 +1,41 @@
 name: Java CI/CD Pipeline
 
-# TETİKLEYİCİ: Bu pipeline ne zaman çalışsın?
-# Cevap: 'main' dalına her 'push' yapıldığında.
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  # GÖREV 1: Derleme ve Test (Build)
-  build:
-    runs-on: ubuntu-latest # GitHub'ın sağladığı sanal bir Ubuntu makinesinde çalış.
+  build-and-deploy: # İşin adını değiştirdik
+    runs-on: ubuntu-latest
 
     steps:
-    # 1. Kodları Çek: GitHub deposundaki kodları bu sanal makineye indir.
+    # 1. Kodları Çek
     - name: Kodları Cek (Checkout)
       uses: actions/checkout@v3
 
-    # 2. Java Kur: Sanal makineye Java 17 kur (Amazon Corretto).
+    # 2. Java Kur
     - name: JDK 17 Kur
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'corretto'
 
-    # 3. Derle ve Test Et: Bizim yerimize 'mvnw' komutunu çalıştır.
+    # 3. Projeyi Derle (Maven)
     - name: Maven ile Derle
       run: ./mvnw clean package
+
+    # 4. Docker Hub'a Giriş Yap (Sırları Kullanarak)
+    - name: Docker Hub Giris
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # 5. Docker Image Oluştur ve Gönder
+    - name: Docker Build ve Push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        # DİKKAT: Buradaki etiket yapısı: kullanici_adi/repo_adi:etiket
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/java-ci-cd-demo:latest
