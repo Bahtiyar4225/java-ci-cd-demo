@@ -8,6 +8,6 @@ public class MerhabaController {
 
     @GetMapping("/")
     public String anaSayfa() {
-        return "Tebrikler! CI/CD Pipeline basariyla calisiyor! 🚀";
+        return " Oglum sen arab mısın! 🚀";
     }
 }
