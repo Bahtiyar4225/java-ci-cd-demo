@@ -12,6 +12,6 @@ class HesapMakinesiTest {
         
         // BEKLENTİ: 5 + 5 = 10 olmalı.
         // AMA BİZ: 11 bekliyoruz diyelim (HATA BURADA!)
-        assertEquals(11, sonuc, "5 + 5 işlemi 10 yapmalıydı ama test 11 bekliyor!");
+        assertEquals(10, sonuc, "5 + 5 işlemi 10 yapmalıydı ama test 11 bekliyor!");
     }
 }
