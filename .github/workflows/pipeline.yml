@@ -39,3 +39,5 @@ jobs:
         push: true
         # DİKKAT: Buradaki etiket yapısı: kullanici_adi/repo_adi:etiket
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/java-ci-cd-demo:latest
+    - name: Render Deploy Tetikle
+      run: curl "${{ secrets.RENDER_DEPLOY_HOOK }}"
